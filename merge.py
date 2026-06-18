@@ -24,6 +24,19 @@ df_clientes = colunas(df_clientes_bruto)
 df_compras = colunas(df_compras_bruto)
 df_detalhes = colunas(df_detalhes_bruto)
 
+# Removendo clientes duplicados da Base 1 ANTES do merge.
+# A base de cadastro continha múltiplas entradas para o mesmo cliente (ex: João Santos
+# aparecia 6 vezes). Sem este tratamento, o merge geraria um produto cartesiano,
+# multiplicando cada linha duplicada do cliente por todas as suas sessões e inflando
+# a base de 159 para 486 linhas
+print("\n" + "=" * 40)
+print("AUDITORIA - BASE DE CLIENTES")
+print("=" * 40)
+clientes_antes = len(df_clientes)
+df_clientes = df_clientes.drop_duplicates(subset='Nome', keep='first')
+clientes_depois = len(df_clientes)
+print(f"Clientes duplicados removidos: {clientes_antes - clientes_depois} (de {clientes_antes} para {clientes_depois} registros únicos)\n")
+
 
 # --- PARTE 2: INTEGRAÇÃO E TRANSFORMAÇÃO ---
 
